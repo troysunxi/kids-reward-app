@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌟 快乐成长 - 儿童奖励管理</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 顶部导航 -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">🌈</span>
+                <span class="logo-text">快乐成长</span>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-add-child" onclick="showAddChildModal()">
+                    <span>➕</span> 添加宝贝
+                </button>
+            </div>
+        </header>
+
+        <!-- 主要内容区 -->
+        <main class="main-content">
+            <!-- 儿童选择区 -->
+            <section class="children-section">
+                <h2 class="section-title">👶 我的宝贝们</h2>
+                <div class="children-list" id="childrenList">
+                    <!-- 动态生成儿童卡片 -->
+                </div>
+            </section>
+
+            <!-- 当前选中儿童的详情 -->
+            <section class="child-detail" id="childDetail" style="display: none;">
+                <!-- 儿童信息卡片 -->
+                <div class="child-card">
+                    <div class="child-avatar" id="childAvatar">👦</div>
+                    <div class="child-info">
+                        <h3 class="child-name" id="childName">宝贝名字</h3>
+                        <div class="points-display">
+                            <span class="points-label">当前积分</span>
+                            <span class="points-value" id="childPoints">0</span>
+                            <span class="points-star">⭐</span>
+                        </div>
+                    </div>
+                    <div class="mood-section">
+                        <label>今天心情：</label>
+                        <div class="mood-selector" id="moodSelector">
+                            <button class="mood-btn" data-mood="happy" onclick="setMood('happy')">😊 开心</button>
+                            <button class="mood-btn" data-mood="excited" onclick="setMood('excited')">🤩 兴奋</button>
+                            <button class="mood-btn" data-mood="normal" onclick="setMood('normal')">😐 平静</button>
+                            <button class="mood-btn" data-mood="sad" onclick="setMood('sad')">😢 难过</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 积分操作区 -->
+                <div class="action-section">
+                    <h3 class="section-title">🎯 积分操作</h3>
+                    <div class="quick-actions">
+                        <button class="action-btn reward" onclick="addPoints(5)">
+                            <span class="action-icon">🌟</span>
+                            <span class="action-text">表现很棒 +5</span>
+                        </button>
+                        <button class="action-btn reward" onclick="addPoints(3)">
+                            <span class="action-icon">👍</span>
+                            <span class="action-text">做得不错 +3</span>
+                        </button>
+                        <button class="action-btn reward" onclick="addPoints(1)">
+                            <span class="action-icon">👏</span>
+                            <span class="action-text">小进步 +1</span>
+                        </button>
+                        <button class="action-btn punish" onclick="subtractPoints(1)">
+                            <span class="action-icon">⚠️</span>
+                            <span class="action-text">小提醒 -1</span>
+                        </button>
+                        <button class="action-btn punish" onclick="subtractPoints(3)">
+                            <span class="action-icon">📝</span>
+                            <span class="action-text">需要改进 -3</span>
+                        </button>
+                        <button class="action-btn custom" onclick="showCustomPointsModal()">
+                            <span class="action-icon">✏️</span>
+                            <span class="action-text">自定义</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 奖励兑换区 -->
+                <div class="rewards-section">
+                    <div class="section-header">
+                        <h3 class="section-title">🎁 奖励兑换</h3>
+                        <button class="btn btn-add-reward" onclick="showAddRewardModal()">➕ 添加奖励</button>
+                    </div>
+                    <div class="rewards-list" id="rewardsList">
+                        <!-- 动态生成奖励卡片 -->
+                    </div>
+                </div>
+
+                <!-- 学习推荐区 -->
+                <div class="learning-section" id="learningSection" style="display: none;">
+                    <h3 class="section-title">📚 学习推荐</h3>
+                    <p class="learning-tip">🎉 恭喜！你达到了学习目标，来看看这些有趣的学习内容吧！</p>
+                    <div class="learning-cards" id="learningCards">
+                        <!-- 动态生成学习推荐 -->
+                    </div>
+                </div>
+
+                <!-- 历史记录区 -->
+                <div class="history-section">
+                    <h3 class="section-title">📋 历史记录</h3>
+                    <div class="history-list" id="historyList">
+                        <!-- 动态生成历史记录 -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- 欢迎页面（无儿童时显示） -->
+            <section class="welcome-section" id="welcomeSection">
+                <div class="welcome-content">
+                    <div class="welcome-icon">🎈</div>
+                    <h2>欢迎使用快乐成长！</h2>
+                    <p>点击上方"添加宝贝"按钮，开始记录孩子的成长点滴吧！</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- 添加儿童弹窗 -->
+    <div class="modal" id="addChildModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>👶 添加宝贝</h3>
+                <button class="modal-close" onclick="closeModal('addChildModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>宝贝名字</label>
+                    <input type="text" id="newChildName" placeholder="请输入宝贝的名字">
+                </div>
+                <div class="form-group">
+                    <label>选择头像</label>
+                    <div class="avatar-selector">
+                        <button class="avatar-btn selected" data-avatar="👦" onclick="selectAvatar('👦', this)">👦</button>
+                        <button class="avatar-btn" data-avatar="👧" onclick="selectAvatar('👧', this)">👧</button>
+                        <button class="avatar-btn" data-avatar="🧒" onclick="selectAvatar('🧒', this)">🧒</button>
+                        <button class="avatar-btn" data-avatar="👶" onclick="selectAvatar('👶', this)">👶</button>
+                        <button class="avatar-btn" data-avatar="🦸" onclick="selectAvatar('🦸', this)">🦸</button>
+                        <button class="avatar-btn" data-avatar="🧙" onclick="selectAvatar('🧙', this)">🧙</button>
+                        <button class="avatar-btn" data-avatar="🦊" onclick="selectAvatar('🦊', this)">🦊</button>
+                        <button class="avatar-btn" data-avatar="🐰" onclick="selectAvatar('🐰', this)">🐰</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>初始积分</label>
+                    <input type="number" id="newChildPoints" value="0" min="0">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" onclick="closeModal('addChildModal')">取消</button>
+                <button class="btn btn-confirm" onclick="addChild()">确认添加</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加奖励弹窗 -->
+    <div class="modal" id="addRewardModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🎁 添加奖励</h3>
+                <button class="modal-close" onclick="closeModal('addRewardModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>奖励名称</label>
+                    <input type="text" id="newRewardName" placeholder="如：小玩具、零食、看电影">
+                </div>
+                <div class="form-group">
+                    <label>所需积分</label>
+                    <input type="number" id="newRewardPoints" value="10" min="1">
+                </div>
+                <div class="form-group">
+                    <label>选择图标</label>
+                    <div class="icon-selector">
+                        <button class="icon-btn selected" data-icon="🎁" onclick="selectIcon('🎁', this)">🎁</button>
+                        <button class="icon-btn" data-icon="🧸" onclick="selectIcon('🧸', this)">🧸</button>
+                        <button class="icon-btn" data-icon="🍬" onclick="selectIcon('🍬', this)">🍬</button>
+                        <button class="icon-btn" data-icon="🎬" onclick="selectIcon('🎬', this)">🎬</button>
+                        <button class="icon-btn" data-icon="🎮" onclick="selectIcon('🎮', this)">🎮</button>
+                        <button class="icon-btn" data-icon="📚" onclick="selectIcon('📚', this)">📚</button>
+                        <button class="icon-btn" data-icon="🎨" onclick="selectIcon('🎨', this)">🎨</button>
+                        <button class="icon-btn" data-icon="🍦" onclick="selectIcon('🍦', this)">🍦</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" onclick="closeModal('addRewardModal')">取消</button>
+                <button class="btn btn-confirm" onclick="addReward()">确认添加</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 自定义积分弹窗 -->
+    <div class="modal" id="customPointsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>✏️ 自定义积分</h3>
+                <button class="modal-close" onclick="closeModal('customPointsModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>积分变化</label>
+                    <input type="number" id="customPointsValue" placeholder="正数加分，负数扣分">
+                </div>
+                <div class="form-group">
+                    <label>原因说明</label>
+                    <input type="text" id="customPointsReason" placeholder="请输入原因">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" onclick="closeModal('customPointsModal')">取消</button>
+                <button class="btn btn-confirm" onclick="applyCustomPoints()">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 兑换确认弹窗 -->
+    <div class="modal" id="confirmExchangeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🎁 兑换确认</h3>
+                <button class="modal-close" onclick="closeModal('confirmExchangeModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <p id="exchangeMessage">确定要兑换这个奖励吗？</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" onclick="closeModal('confirmExchangeModal')">取消</button>
+                <button class="btn btn-confirm" onclick="confirmExchange()">确认兑换</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
