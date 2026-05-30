@@ -3,17 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌟 快乐成长 - 儿童奖励管理</title>
+    <meta name="description" content="快乐成长 - 专业的儿童奖励管理和育儿知识分享平台。帮助家长科学管理儿童行为，培养良好习惯，分享实用育儿经验。">
+    <meta name="keywords" content="儿童奖励,育儿知识,家庭教育,儿童习惯培养,积分管理,亲子教育">
+    <meta name="author" content="快乐成长">
+    <meta property="og:title" content="🌟 快乐成长 - 儿童奖励管理与育儿知识">
+    <meta property="og:description" content="专业的儿童奖励管理和育儿知识分享平台">
+    <meta property="og:type" content="website">
+    <title>🌟 快乐成长 - 儿童奖励管理与育儿知识</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="blog-styles.css">
+    <link rel="canonical" href="https://troysunxi.github.io/kids-reward-app/">
+    <!-- 百度统计 -->
+    <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?YOUR_BAIDU_ID";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
 </head>
 <body>
     <div class="app-container">
+        <!-- 顶部广告位 -->
+        <div class="ad-container top-ad" id="topAd">
+            <div class="ad-label">广告</div>
+            <div class="ad-content">
+                <!-- 广告代码将在这里插入 -->
+                <div class="ad-placeholder">📢 广告位招租 - 联系合作</div>
+            </div>
+        </div>
+
         <!-- 顶部导航 -->
         <header class="header">
-            <div class="logo">
+            <div class="logo" onclick="showPage('home')">
                 <span class="logo-icon">🌈</span>
                 <span class="logo-text">快乐成长</span>
             </div>
+            <nav class="main-nav">
+                <button class="nav-btn active" data-page="home" onclick="showPage('home')">🏠 首页工具</button>
+                <button class="nav-btn" data-page="blog" onclick="showPage('blog')">📚 育儿知识</button>
+                <button class="nav-btn" data-page="about" onclick="showPage('about')">👋 关于我们</button>
+            </nav>
             <div class="header-actions">
                 <button class="btn btn-add-child" onclick="showAddChildModal()">
                     <span>➕</span> 添加宝贝
@@ -23,107 +55,287 @@
 
         <!-- 主要内容区 -->
         <main class="main-content">
-            <!-- 儿童选择区 -->
-            <section class="children-section">
-                <h2 class="section-title">👶 我的宝贝们</h2>
-                <div class="children-list" id="childrenList">
-                    <!-- 动态生成儿童卡片 -->
+            <!-- 侧边栏广告 -->
+            <aside class="sidebar-ad" id="sidebarAd">
+                <div class="ad-label">精选推荐</div>
+                <div class="ad-content">
+                    <div class="product-card">
+                        <div class="product-icon">📖</div>
+                        <div class="product-title">儿童绘本推荐</div>
+                        <div class="product-desc">3-8岁必读经典绘本</div>
+                        <a href="#" class="product-link" onclick="trackAdClick('绘本')">查看详情 →</a>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-icon">🎮</div>
+                        <div class="product-title">益智玩具精选</div>
+                        <div class="product-desc">培养逻辑思维能力</div>
+                        <a href="#" class="product-link" onclick="trackAdClick('玩具')">查看详情 →</a>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-icon">🎨</div>
+                        <div class="product-title">在线美术课</div>
+                        <div class="product-desc">免费试听课程</div>
+                        <a href="#" class="product-link" onclick="trackAdClick('美术课')">立即领取 →</a>
+                    </div>
                 </div>
-            </section>
+            </aside>
 
-            <!-- 当前选中儿童的详情 -->
-            <section class="child-detail" id="childDetail" style="display: none;">
-                <!-- 儿童信息卡片 -->
-                <div class="child-card">
-                    <div class="child-avatar" id="childAvatar">👦</div>
-                    <div class="child-info">
-                        <h3 class="child-name" id="childName">宝贝名字</h3>
-                        <div class="points-display">
-                            <span class="points-label">当前积分</span>
-                            <span class="points-value" id="childPoints">0</span>
-                            <span class="points-star">⭐</span>
+            <!-- 首页工具页面 -->
+            <div class="page-content" id="homePage">
+                <!-- 儿童选择区 -->
+                <section class="children-section">
+                    <h2 class="section-title">👶 我的宝贝们</h2>
+                    <div class="children-list" id="childrenList">
+                        <!-- 动态生成儿童卡片 -->
+                    </div>
+                </section>
+
+                <!-- 当前选中儿童的详情 -->
+                <section class="child-detail" id="childDetail" style="display: none;">
+                    <!-- 儿童信息卡片 -->
+                    <div class="child-card">
+                        <div class="child-avatar" id="childAvatar">👦</div>
+                        <div class="child-info">
+                            <h3 class="child-name" id="childName">宝贝名字</h3>
+                            <div class="points-display">
+                                <span class="points-label">当前积分</span>
+                                <span class="points-value" id="childPoints">0</span>
+                                <span class="points-star">⭐</span>
+                            </div>
+                        </div>
+                        <div class="mood-section">
+                            <label>今天心情：</label>
+                            <div class="mood-selector" id="moodSelector">
+                                <button class="mood-btn" data-mood="happy" onclick="setMood('happy')">😊 开心</button>
+                                <button class="mood-btn" data-mood="excited" onclick="setMood('excited')">🤩 兴奋</button>
+                                <button class="mood-btn" data-mood="normal" onclick="setMood('normal')">😐 平静</button>
+                                <button class="mood-btn" data-mood="sad" onclick="setMood('sad')">😢 难过</button>
+                            </div>
                         </div>
                     </div>
-                    <div class="mood-section">
-                        <label>今天心情：</label>
-                        <div class="mood-selector" id="moodSelector">
-                            <button class="mood-btn" data-mood="happy" onclick="setMood('happy')">😊 开心</button>
-                            <button class="mood-btn" data-mood="excited" onclick="setMood('excited')">🤩 兴奋</button>
-                            <button class="mood-btn" data-mood="normal" onclick="setMood('normal')">😐 平静</button>
-                            <button class="mood-btn" data-mood="sad" onclick="setMood('sad')">😢 难过</button>
+
+                    <!-- 积分操作区 -->
+                    <div class="action-section">
+                        <h3 class="section-title">🎯 积分操作</h3>
+                        <div class="quick-actions">
+                            <button class="action-btn reward" onclick="addPoints(5)">
+                                <span class="action-icon">🌟</span>
+                                <span class="action-text">表现很棒 +5</span>
+                            </button>
+                            <button class="action-btn reward" onclick="addPoints(3)">
+                                <span class="action-icon">👍</span>
+                                <span class="action-text">做得不错 +3</span>
+                            </button>
+                            <button class="action-btn reward" onclick="addPoints(1)">
+                                <span class="action-icon">👏</span>
+                                <span class="action-text">小进步 +1</span>
+                            </button>
+                            <button class="action-btn punish" onclick="subtractPoints(1)">
+                                <span class="action-icon">⚠️</span>
+                                <span class="action-text">小提醒 -1</span>
+                            </button>
+                            <button class="action-btn punish" onclick="subtractPoints(3)">
+                                <span class="action-icon">📝</span>
+                                <span class="action-text">需要改进 -3</span>
+                            </button>
+                            <button class="action-btn custom" onclick="showCustomPointsModal()">
+                                <span class="action-icon">✏️</span>
+                                <span class="action-text">自定义</span>
+                            </button>
                         </div>
                     </div>
-                </div>
 
-                <!-- 积分操作区 -->
-                <div class="action-section">
-                    <h3 class="section-title">🎯 积分操作</h3>
-                    <div class="quick-actions">
-                        <button class="action-btn reward" onclick="addPoints(5)">
-                            <span class="action-icon">🌟</span>
-                            <span class="action-text">表现很棒 +5</span>
-                        </button>
-                        <button class="action-btn reward" onclick="addPoints(3)">
-                            <span class="action-icon">👍</span>
-                            <span class="action-text">做得不错 +3</span>
-                        </button>
-                        <button class="action-btn reward" onclick="addPoints(1)">
-                            <span class="action-icon">👏</span>
-                            <span class="action-text">小进步 +1</span>
-                        </button>
-                        <button class="action-btn punish" onclick="subtractPoints(1)">
-                            <span class="action-icon">⚠️</span>
-                            <span class="action-text">小提醒 -1</span>
-                        </button>
-                        <button class="action-btn punish" onclick="subtractPoints(3)">
-                            <span class="action-icon">📝</span>
-                            <span class="action-text">需要改进 -3</span>
-                        </button>
-                        <button class="action-btn custom" onclick="showCustomPointsModal()">
-                            <span class="action-icon">✏️</span>
-                            <span class="action-text">自定义</span>
-                        </button>
+                    <!-- 奖励兑换区 -->
+                    <div class="rewards-section">
+                        <div class="section-header">
+                            <h3 class="section-title">🎁 奖励兑换</h3>
+                            <button class="btn btn-add-reward" onclick="showAddRewardModal()">➕ 添加奖励</button>
+                        </div>
+                        <div class="rewards-list" id="rewardsList">
+                            <!-- 动态生成奖励卡片 -->
+                        </div>
                     </div>
-                </div>
 
-                <!-- 奖励兑换区 -->
-                <div class="rewards-section">
+                    <!-- 学习推荐区 -->
+                    <div class="learning-section" id="learningSection" style="display: none;">
+                        <h3 class="section-title">📚 学习推荐</h3>
+                        <p class="learning-tip">🎉 恭喜！你达到了学习目标，来看看这些有趣的学习内容吧！</p>
+                        <div class="learning-cards" id="learningCards">
+                            <!-- 动态生成学习推荐 -->
+                        </div>
+                    </div>
+
+                    <!-- 历史记录区 -->
+                    <div class="history-section">
+                        <h3 class="section-title">📋 历史记录</h3>
+                        <div class="history-list" id="historyList">
+                            <!-- 动态生成历史记录 -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 欢迎页面（无儿童时显示） -->
+                <section class="welcome-section" id="welcomeSection">
+                    <div class="welcome-content">
+                        <div class="welcome-icon">🎈</div>
+                        <h2>欢迎使用快乐成长！</h2>
+                        <p>点击上方"添加宝贝"按钮，开始记录孩子的成长点滴吧！</p>
+                        <div class="feature-grid">
+                            <div class="feature-item">
+                                <div class="feature-icon">🎯</div>
+                                <div class="feature-title">积分管理</div>
+                                <div class="feature-desc">科学奖励机制，培养好习惯</div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">📊</div>
+                                <div class="feature-title">成长记录</div>
+                                <div class="feature-desc">记录每一次进步</div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">🎁</div>
+                                <div class="feature-title">奖励兑换</div>
+                                <div class="feature-desc">积分换奖励，动力满满</div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">📚</div>
+                                <div class="feature-title">育儿知识</div>
+                                <div class="feature-desc">专业的教育指导</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 文章推荐区 -->
+                <section class="article-preview-section">
                     <div class="section-header">
-                        <h3 class="section-title">🎁 奖励兑换</h3>
-                        <button class="btn btn-add-reward" onclick="showAddRewardModal()">➕ 添加奖励</button>
+                        <h3 class="section-title">📚 热门育儿文章</h3>
+                        <button class="btn btn-view-all" onclick="showPage('blog')">查看全部 →</button>
                     </div>
-                    <div class="rewards-list" id="rewardsList">
-                        <!-- 动态生成奖励卡片 -->
+                    <div class="article-preview-list" id="articlePreviewList">
+                        <!-- 动态生成文章预览 -->
+                    </div>
+                </section>
+            </div>
+
+            <!-- 博客页面 -->
+            <div class="page-content" id="blogPage" style="display: none;">
+                <div class="blog-header">
+                    <h1 class="blog-title">📚 育儿知识库</h1>
+                    <p class="blog-subtitle">科学育儿，陪伴孩子快乐成长</p>
+                    <div class="blog-categories">
+                        <button class="category-btn active" data-category="all" onclick="filterArticles('all')">全部</button>
+                        <button class="category-btn" data-category="education" onclick="filterArticles('education')">教育方法</button>
+                        <button class="category-btn" data-category="psychology" onclick="filterArticles('psychology')">儿童心理</button>
+                        <button class="category-btn" data-category="habits" onclick="filterArticles('habits')">习惯培养</button>
+                        <button class="category-btn" data-category="games" onclick="filterArticles('games')">亲子游戏</button>
                     </div>
                 </div>
 
-                <!-- 学习推荐区 -->
-                <div class="learning-section" id="learningSection" style="display: none;">
-                    <h3 class="section-title">📚 学习推荐</h3>
-                    <p class="learning-tip">🎉 恭喜！你达到了学习目标，来看看这些有趣的学习内容吧！</p>
-                    <div class="learning-cards" id="learningCards">
-                        <!-- 动态生成学习推荐 -->
+                <!-- 文章列表广告 -->
+                <div class="ad-container inline-ad">
+                    <div class="ad-label">赞助商推荐</div>
+                    <div class="ad-banner">
+                        <div class="ad-placeholder-large">🎯 广告位 - 儿童教育产品推广</div>
                     </div>
                 </div>
 
-                <!-- 历史记录区 -->
-                <div class="history-section">
-                    <h3 class="section-title">📋 历史记录</h3>
-                    <div class="history-list" id="historyList">
-                        <!-- 动态生成历史记录 -->
+                <div class="article-list" id="articleList">
+                    <!-- 动态生成文章列表 -->
+                </div>
+
+                <!-- 文章详情（点击后显示） -->
+                <div class="article-detail" id="articleDetail" style="display: none;">
+                    <button class="btn btn-back" onclick="backToArticleList()">← 返回文章列表</button>
+                    <article class="article-content" id="articleContent">
+                        <!-- 动态生成文章内容 -->
+                    </article>
+                    
+                    <!-- 文章底部广告 -->
+                    <div class="ad-container article-ad">
+                        <div class="ad-label">相关推荐</div>
+                        <div class="ad-content">
+                            <div class="ad-placeholder">📚 相关育儿课程推荐</div>
+                        </div>
+                    </div>
+
+                    <!-- 相关文章 -->
+                    <div class="related-articles">
+                        <h3>📖 相关文章推荐</h3>
+                        <div class="related-list" id="relatedList"></div>
                     </div>
                 </div>
-            </section>
+            </div>
 
-            <!-- 欢迎页面（无儿童时显示） -->
-            <section class="welcome-section" id="welcomeSection">
-                <div class="welcome-content">
-                    <div class="welcome-icon">🎈</div>
-                    <h2>欢迎使用快乐成长！</h2>
-                    <p>点击上方"添加宝贝"按钮，开始记录孩子的成长点滴吧！</p>
+            <!-- 关于页面 -->
+            <div class="page-content" id="aboutPage" style="display: none;">
+                <div class="about-container">
+                    <div class="about-header">
+                        <div class="about-icon">🌈</div>
+                        <h1>关于快乐成长</h1>
+                        <p>陪伴孩子快乐成长的每一天</p>
+                    </div>
+                    
+                    <div class="about-content">
+                        <section class="about-section">
+                            <h2>🎯 我们的使命</h2>
+                            <p>快乐成长致力于为家长提供科学、实用的儿童教育工具和方法。我们相信，每个孩子都是独特的，通过正向激励和耐心引导，可以帮助孩子建立良好的行为习惯，培养积极向上的品格。</p>
+                        </section>
+
+                        <section class="about-section">
+                            <h2>✨ 核心功能</h2>
+                            <ul class="feature-list">
+                                <li><strong>积分奖励系统</strong> - 通过正向激励培养孩子好习惯</li>
+                                <li><strong>多孩管理</strong> - 支持多个孩子的独立管理</li>
+                                <li><strong>成长记录</strong> - 记录孩子每一天的进步</li>
+                                <li><strong>育儿知识</strong> - 专业的教育指导和方法分享</li>
+                            </ul>
+                        </section>
+
+                        <section class="about-section">
+                            <h2>📞 联系我们</h2>
+                            <p>如果您有任何建议或合作意向，欢迎联系我们：</p>
+                            <div class="contact-info">
+                                <p>📧 邮箱：contact@kuailechengzhang.com</p>
+                                <p>💬 微信：KidsRewardApp</p>
+                            </div>
+                        </section>
+
+                        <section class="about-section">
+                            <h2>🤝 商务合作</h2>
+                            <p>我们欢迎与儿童教育品牌、出版社、玩具厂商等进行内容合作和广告投放。</p>
+                            <button class="btn btn-primary" onclick="alert('合作咨询请发送邮件至 business@kuailechengzhang.com')">洽谈合作</button>
+                        </section>
+                    </div>
                 </div>
-            </section>
+            </div>
         </main>
+
+        <!-- 底部广告 -->
+        <div class="ad-container bottom-ad">
+            <div class="ad-label">广告</div>
+            <div class="ad-content">
+                <div class="ad-placeholder">📢 底部广告位 - 品牌推广首选</div>
+            </div>
+        </div>
+
+        <!-- 页脚 -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="#" onclick="showPage('home')">首页</a>
+                    <a href="#" onclick="showPage('blog')">育儿知识</a>
+                    <a href="#" onclick="showPage('about')">关于我们</a>
+                    <a href="#" onclick="alert('隐私政策页面建设中')">隐私政策</a>
+                </div>
+                <div class="footer-copyright">
+                    <p>© 2024 快乐成长 Kids Reward App. All rights reserved.</p>
+                    <p>用心陪伴，见证成长每一步 ❤️</p>
+                </div>
+                <div class="footer-stats">
+                    <span>📊 已有 <strong id="userCount">1,234</strong> 位家长在使用</span>
+                </div>
+            </div>
+        </footer>
     </div>
 
     <!-- 添加儿童弹窗 -->
