@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="blog-styles.css">
     <link rel="stylesheet" href="auth-styles.css">
+    <link rel="stylesheet" href="reward-levels.css">
     <link rel="canonical" href="https://troysunxi.github.io/kids-reward-app/">
     <!-- 百度统计 -->
     <script>
@@ -390,21 +391,52 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label>奖励名称</label>
-                    <input type="text" id="newRewardName" placeholder="如：小玩具、零食、看电影">
+                    <input type="text" id="newRewardName" placeholder="如：棒棒糖、遥控汽车、去游乐园">
                 </div>
                 <div class="form-group">
                     <label>所需积分</label>
-                    <input type="number" id="newRewardPoints" value="10" min="1">
+                    <input type="number" id="newRewardPoints" value="10" min="1" onchange="updateRewardLevelPreview()">
+                    <div class="reward-level-preview" id="rewardLevelPreview">自动识别为：普通奖励</div>
+                </div>
+                <div class="form-group">
+                    <label>奖励等级（可选）</label>
+                    <div class="level-selector">
+                        <button class="level-btn selected" data-level="normal" onclick="selectRewardLevel('normal', this)" style="background: #E8F5E9; color: #6BCB77;">
+                            🟢 普通奖励<br><small>0-30分</small>
+                        </button>
+                        <button class="level-btn" data-level="advanced" onclick="selectRewardLevel('advanced', this)" style="background: #E3F2FD; color: #4D96FF;">
+                            🔵 高级奖励<br><small>31-80分</small>
+                        </button>
+                        <button class="level-btn" data-level="luxury" onclick="selectRewardLevel('luxury', this)" style="background: #FFF9E6; color: #FFD93D;">
+                            🟡 豪华奖励<br><small>81分以上</small>
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>奖励描述（选填）</label>
+                    <input type="text" id="newRewardDesc" placeholder="如：甜甜的奖励、酷炫遥控车">
                 </div>
                 <div class="form-group">
                     <label>选择图标</label>
                     <div class="icon-selector">
                         <button class="icon-btn selected" data-icon="🎁" onclick="selectIcon('🎁', this)">🎁</button>
-                        <button class="icon-btn" data-icon="🧸" onclick="selectIcon('🧸', this)">🧸</button>
+                        <button class="icon-btn" data-icon="🍭" onclick="selectIcon('🍭', this)">🍭</button>
                         <button class="icon-btn" data-icon="🍬" onclick="selectIcon('🍬', this)">🍬</button>
+                        <button class="icon-btn" data-icon="⭐" onclick="selectIcon('⭐', this)">⭐</button>
+                        <button class="icon-btn" data-icon="📺" onclick="selectIcon('📺', this)">📺</button>
+                        <button class="icon-btn" data-icon="🍽️" onclick="selectIcon('🍽️', this)">🍽️</button>
+                        <button class="icon-btn" data-icon="🌙" onclick="selectIcon('🌙', this)">🌙</button>
                         <button class="icon-btn" data-icon="🎬" onclick="selectIcon('🎬', this)">🎬</button>
-                        <button class="icon-btn" data-icon="🎮" onclick="selectIcon('🎮', this)">🎮</button>
+                        <button class="icon-btn" data-icon="🧸" onclick="selectIcon('🧸', this)">🧸</button>
+                        <button class="icon-btn" data-icon="🌳" onclick="selectIcon('🌳', this)">🌳</button>
                         <button class="icon-btn" data-icon="📚" onclick="selectIcon('📚', this)">📚</button>
+                        <button class="icon-btn" data-icon="🍕" onclick="selectIcon('🍕', this)">🍕</button>
+                        <button class="icon-btn" data-icon="🎢" onclick="selectIcon('🎢', this)">🎢</button>
+                        <button class="icon-btn" data-icon="🧱" onclick="selectIcon('🧱', this)">🧱</button>
+                        <button class="icon-btn" data-icon="📱" onclick="selectIcon('📱', this)">📱</button>
+                        <button class="icon-btn" data-icon="🚗" onclick="selectIcon('🚗', this)">🚗</button>
+                        <button class="icon-btn" data-icon="✈️" onclick="selectIcon('✈️', this)">✈️</button>
+                        <button class="icon-btn" data-icon="🎮" onclick="selectIcon('🎮', this)">🎮</button>
                         <button class="icon-btn" data-icon="🎨" onclick="selectIcon('🎨', this)">🎨</button>
                         <button class="icon-btn" data-icon="🍦" onclick="selectIcon('🍦', this)">🍦</button>
                     </div>
