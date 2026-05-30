@@ -9,10 +9,8 @@
  */
 
 // ===== Supabase 配置 =====
-// ⚠️ 重要：你需要替换以下两个值为你自己的 Supabase 项目信息
-// 获取方式：登录 https://supabase.com → 选择项目 → Settings → API
-const SUPABASE_URL = 'YOUR_SUPABASE_URL';      // 例如：https://abcdef.supabase.co
-const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY'; // 例如：eyJhbGciOiJIUzI1NiIs...
+const SUPABASE_URL = 'https://huwlajugwvahpunrtnew.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_Be3VjK-BVukIJvz7ZdYuBA_OxW5X2kq';
 
 // Supabase 客户端实例
 let supabaseClient = null;
