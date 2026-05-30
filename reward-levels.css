@@ -1,0 +1,127 @@
+/* ===== 奖励等级样式 ===== */
+
+/* ===== 等级选择器 ===== */
+.level-selector {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.level-btn {
+    padding: 12px;
+    border: 2px solid transparent;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.level-btn small {
+    font-size: 11px;
+    font-weight: normal;
+    opacity: 0.8;
+}
+
+.level-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.level-btn.selected {
+    border-color: currentColor;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    transform: scale(1.02);
+}
+
+/* ===== 等级预览 ===== */
+.reward-level-preview {
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* ===== 奖励等级区块 ===== */
+.reward-level-section {
+    margin-bottom: 25px;
+}
+
+.reward-level-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    border-radius: var(--border-radius-sm);
+    margin-bottom: 15px;
+}
+
+.reward-level-name {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.reward-level-range {
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+.reward-level-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+/* ===== 奖励卡片按等级样式 ===== */
+.reward-card.normal {
+    background: linear-gradient(135deg, #E8F5E9, #F1F8E9);
+    border: 2px solid #6BCB77;
+}
+
+.reward-card.advanced {
+    background: linear-gradient(135deg, #E3F2FD, #E8F5E9);
+    border: 2px solid #4D96FF;
+}
+
+.reward-card.luxury {
+    background: linear-gradient(135deg, #FFF9E6, #FFF5F8);
+    border: 2px solid #FFD93D;
+    box-shadow: 0 4px 15px rgba(255, 217, 61, 0.2);
+}
+
+.reward-card.luxury:hover {
+    box-shadow: 0 8px 25px rgba(255, 217, 61, 0.3);
+}
+
+/* ===== 奖励描述 ===== */
+.reward-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin: 5px 0;
+    line-height: 1.4;
+}
+
+/* ===== 响应式 ===== */
+@media (max-width: 768px) {
+    .level-selector {
+        grid-template-columns: 1fr;
+    }
+    
+    .reward-level-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .reward-level-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .reward-level-header {
+        flex-direction: column;
+        gap: 5px;
+        text-align: center;
+    }
+}
