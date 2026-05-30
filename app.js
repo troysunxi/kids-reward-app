@@ -732,6 +732,10 @@ function loadData() {
 
 function saveData() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+    // 如果已登录，同步到云端
+    if (typeof syncDataToCloud === 'function') {
+        syncDataToCloud();
+    }
 }
 
 // ===== 页面切换 =====
