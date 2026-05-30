@@ -1183,14 +1183,66 @@ function applyCustomPoints() {
     }
 }
 
+// ===== 奖励等级定义 =====
+const REWARD_LEVELS = {
+    normal: {
+        name: '普通奖励',
+        color: '#6BCB77',
+        bgColor: '#E8F5E9',
+        minPoints: 0,
+        maxPoints: 30
+    },
+    advanced: {
+        name: '高级奖励',
+        color: '#4D96FF',
+        bgColor: '#E3F2FD',
+        minPoints: 31,
+        maxPoints: 80
+    },
+    luxury: {
+        name: '豪华奖励',
+        color: '#FFD93D',
+        bgColor: '#FFF9E6',
+        minPoints: 81,
+        maxPoints: 999999
+    }
+};
+
 // ===== 奖励系统 =====
 function getDefaultRewards() {
     return [
-        { id: '1', name: '小零食', points: 10, icon: '🍬' },
-        { id: '2', name: '看动画片30分钟', points: 20, icon: '🎬' },
-        { id: '3', name: '小玩具', points: 50, icon: '🧸' },
-        { id: '4', name: '去游乐园', points: 100, icon: '🎢' }
+        // 普通奖励 (0-30分)
+        { id: '1', name: '棒棒糖', points: 5, icon: '🍭', level: 'normal', description: '甜甜的奖励' },
+        { id: '2', name: '小零食', points: 10, icon: '🍬', level: 'normal', description: '美味小点心' },
+        { id: '3', name: '贴纸一张', points: 15, icon: '⭐', level: 'normal', description: '可爱贴纸' },
+        { id: '4', name: '看动画片15分钟', points: 20, icon: '📺', level: 'normal', description: '精彩动画时间' },
+        { id: '5', name: '选择晚餐', points: 25, icon: '🍽️', level: 'normal', description: '今天吃什么你决定' },
+        { id: '6', name: '晚睡15分钟', points: 30, icon: '🌙', level: 'normal', description: '多玩一会儿' },
+        
+        // 高级奖励 (31-80分)
+        { id: '7', name: '看动画片30分钟', points: 40, icon: '🎬', level: 'advanced', description: '更多动画时间' },
+        { id: '8', name: '小玩具', points: 50, icon: '🧸', level: 'advanced', description: '可爱小玩具' },
+        { id: '9', name: '去公园玩', points: 60, icon: '🌳', level: 'advanced', description: '户外游玩' },
+        { id: '10', name: '买一本新书', points: 70, icon: '📚', level: 'advanced', description: '知识的力量' },
+        { id: '11', name: '吃大餐', points: 80, icon: '🍕', level: 'advanced', description: '美味大餐' },
+        
+        // 豪华奖励 (81分以上)
+        { id: '12', name: '去游乐园', points: 100, icon: '🎢', level: 'luxury', description: '欢乐时光' },
+        { id: '13', name: '买乐高玩具', points: 150, icon: '🧱', level: 'luxury', description: '创意拼搭' },
+        { id: '14', name: '平板电脑时间1小时', points: 200, icon: '📱', level: 'luxury', description: '游戏时间' },
+        { id: '15', name: '遥控汽车', points: 300, icon: '🚗', level: 'luxury', description: '酷炫遥控车' },
+        { id: '16', name: '周末旅行', points: 500, icon: '✈️', level: 'luxury', description: '精彩旅程' }
     ];
+}
+
+// 获取奖励等级
+function getRewardLevel(points) {
+    for (const [key, level] of Object.entries(REWARD_LEVELS)) {
+        if (points >= level.minPoints && points <= level.maxPoints) {
+            return key;
+        }
+    }
+    return 'normal';
 }
 
 function showAddRewardModal() {
@@ -1216,23 +1268,53 @@ function selectIcon(icon, element) {
     element.classList.add('selected');
 }
 
+let selectedRewardLevel = 'normal';
+
+function selectRewardLevel(level, element) {
+    selectedRewardLevel = level;
+    document.querySelectorAll('.level-btn').forEach(btn => btn.classList.remove('selected'));
+    element.classList.add('selected');
+}
+
+function updateRewardLevelPreview() {
+    const points = parseInt(document.getElementById('newRewardPoints').value) || 0;
+    const level = getRewardLevel(points);
+    const levelName = REWARD_LEVELS[level].name;
+    document.getElementById('rewardLevelPreview').textContent = `自动识别为：${levelName}`;
+    
+    // 自动选中对应的等级按钮
+    document.querySelectorAll('.level-btn').forEach(btn => {
+        btn.classList.remove('selected');
+        if (btn.dataset.level === level) {
+            btn.classList.add('selected');
+        }
+    });
+    selectedRewardLevel = level;
+}
+
 function addReward() {
     const child = getCurrentChild();
     if (!child) return;
     
     const name = document.getElementById('newRewardName').value.trim();
     const points = parseInt(document.getElementById('newRewardPoints').value) || 10;
+    const description = document.getElementById('newRewardDesc').value.trim();
     
     if (!name) {
         alert('请输入奖励名称！');
         return;
     }
     
+    // 根据积分自动判断等级，或使用用户选择的等级
+    const level = getRewardLevel(points);
+    
     const reward = {
         id: Date.now().toString(),
         name: name,
         points: points,
-        icon: appData.selectedIcon
+        icon: appData.selectedIcon,
+        level: selectedRewardLevel || level,
+        description: description
     };
     
     child.rewards.push(reward);
@@ -1265,17 +1347,56 @@ function renderRewardsList(child) {
         return;
     }
     
-    container.innerHTML = child.rewards.map(reward => {
-        const canExchange = child.points >= reward.points;
-        return `
-            <div class="reward-card ${canExchange ? '' : 'disabled'}" onclick="${canExchange ? `tryExchange('${reward.id}')` : ''}">
-                <button class="delete-reward-btn" onclick="deleteReward('${reward.id}', event)">×</button>
-                <div class="reward-icon">${reward.icon}</div>
-                <div class="reward-name">${reward.name}</div>
-                <div class="reward-points">⭐ ${reward.points}</div>
+    // 按等级分组
+    const groupedRewards = {
+        normal: [],
+        advanced: [],
+        luxury: []
+    };
+    
+    child.rewards.forEach(reward => {
+        const level = reward.level || getRewardLevel(reward.points);
+        if (groupedRewards[level]) {
+            groupedRewards[level].push(reward);
+        } else {
+            groupedRewards.normal.push(reward);
+        }
+    });
+    
+    let html = '';
+    
+    // 渲染每个等级
+    for (const [levelKey, levelConfig] of Object.entries(REWARD_LEVELS)) {
+        const rewards = groupedRewards[levelKey];
+        if (rewards.length === 0) continue;
+        
+        html += `
+            <div class="reward-level-section">
+                <div class="reward-level-header" style="background: ${levelConfig.bgColor}; border-left: 4px solid ${levelConfig.color};">
+                    <span class="reward-level-name" style="color: ${levelConfig.color};">${levelConfig.name}</span>
+                    <span class="reward-level-range">${levelConfig.minPoints}-${levelConfig.maxPoints === 999999 ? '∞' : levelConfig.maxPoints} 积分</span>
+                </div>
+                <div class="reward-level-cards">
+                    ${rewards.map(reward => {
+                        const canExchange = child.points >= reward.points;
+                        return `
+                            <div class="reward-card ${canExchange ? '' : 'disabled'} ${levelKey}" 
+                                 style="border-color: ${levelConfig.color};"
+                                 onclick="${canExchange ? `tryExchange('${reward.id}')` : ''}">
+                                <button class="delete-reward-btn" onclick="deleteReward('${reward.id}', event)">×</button>
+                                <div class="reward-icon">${reward.icon}</div>
+                                <div class="reward-name">${reward.name}</div>
+                                ${reward.description ? `<div class="reward-desc">${reward.description}</div>` : ''}
+                                <div class="reward-points" style="color: ${levelConfig.color};">⭐ ${reward.points}</div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
             </div>
         `;
-    }).join('');
+    }
+    
+    container.innerHTML = html;
 }
 
 function tryExchange(rewardId) {
